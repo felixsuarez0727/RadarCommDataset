@@ -29,7 +29,6 @@ def main():
 
     print(f"Looking for: mod={mod}, sig={sig}, snr={snr}, num={num}")
 
-    found_key = None
     found_data = None
 
     with h5py.File('RadComOta2.45GHz.hdf5', 'r') as f:
@@ -43,7 +42,6 @@ def main():
         if len(keys) > 0 and isinstance(keys[0], str) and keys[0].startswith("("):
             search_key = f"('{mod}', '{sig}', '{snr}', '{num}')"
             if search_key in f:
-                found_key = search_key
                 found_data = f[search_key][:]
 
     if found_data is None:
@@ -64,16 +62,19 @@ def main():
         # Adjust these indices based on actual structure
         imag = found_data[1, :]
 
-    # Make sure we have equal length arrays
+    # Equal length arrays
     min_len = min(len(real), len(imag))
     real = real[:min_len]
     imag = imag[:min_len]
 
     # Plot and visualize the selected sample
     plt.figure(figsize=[8, 6])
-    plt.plot(real, '-go')
-    plt.plot(imag, '-bo')
-    plt.title(str(key), fontsize=16)
+    plt.plot(real, '-go', label="Real")
+    plt.plot(imag, '-bo', label="Imaginary")
+    plt.legend()
+    plt.title(f"Mod: {mod}, Sig: {sig}, SNR: {snr}, Num: {num}", fontsize=16)
+    plt.xlabel("Sample Index")
+    plt.ylabel("Amplitude")
     plt.show()
 
     return True
