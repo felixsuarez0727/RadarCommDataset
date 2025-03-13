@@ -1,9 +1,7 @@
 import h5py
 import sys
 import argparse
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
 
 
 def parse_args():
